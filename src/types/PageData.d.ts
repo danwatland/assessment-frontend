@@ -30,7 +30,7 @@ interface ImageOptions {
     alt: string
 }
 
-interface PageComponent<T extends ButtonOptions | ConditionOptions | ImageOptions | WeatherOptions> {
+interface Component<T extends ButtonOptions | ConditionOptions | ImageOptions | WeatherOptions> {
     id: number,
     type: 'button' | 'condition' | 'weather' | 'image',
     options: T,
@@ -40,5 +40,5 @@ interface PageComponent<T extends ButtonOptions | ConditionOptions | ImageOption
 interface PageData {
     variables?: Variable[],
     lists: ListItem[],
-    components: PageComponent[]
+    components: Component[]
 }
