@@ -21,8 +21,8 @@ interface ConditionOptions {
 }
 
 interface WeatherOptions {
-    lat: number,
-    lon: number
+    lat: string,
+    lon: string
 }
 
 interface ImageOptions {
