@@ -26,7 +26,7 @@ const WeatherComponent = (props: WeatherOptions): React.ReactElement => {
                     <h4>{forecast.conditionName}</h4>
                     <h4>{forecast.location}</h4>
                     { forecast.upcomming.map((day) => (
-                        <div>
+                        <div key={day.day}>
                             <img src={iconLookup[forecast.condition]} alt={day.conditionName}/>
                             <h4>{day.day}</h4>
                         </div>
