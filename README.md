@@ -132,5 +132,5 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### Developer Notes
 
-* ...
+* Node version 14.17 is listed in `.nvmrc` but there aren't binaries for Node < v15 available for Apple M1 chips. Read more about this here: [https://github.com/nvm-sh/nvm/issues/2350](https://github.com/nvm-sh/nvm/issues/2350). It is possible to get around this by opening a new shell via `arch -x86_64 SHELL_NAME` (replace SHELL_NAME with your preferred shell, i.e. zsh/bash) 
 * ... 
