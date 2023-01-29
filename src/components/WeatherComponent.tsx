@@ -33,7 +33,7 @@ const WeatherComponent = (props: WeatherOptions): React.ReactElement => {
                         <div className='weather-forecast-daily-temperature'>
                             { forecast.upcomming.map((day) => (
                                 <div key={day.day}>
-                                    <img src={iconLookup[forecast.condition]} alt={day.conditionName} width={48} height={48}/>
+                                    <img src={iconLookup[day.condition]} alt={day.conditionName} width={48} height={48}/>
                                     <h4>{day.day}</h4>
                                 </div>
                             ))}
