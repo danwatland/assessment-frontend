@@ -12,6 +12,24 @@ type PageState = {
 }
 
 const convertVariablesToDictionary = (dictionary: Dictionary, variable: Variable): Dictionary => ({ ...dictionary, [variable.name]: variable.initialValue });
+const calculateDisplayedComponentIds = (pageData: PageData, variables: Dictionary): number[] => pageData.components
+    .filter((component) => canComponentBeDisplayed(component.id, pageData, variables))
+    .map((component) => component.id);
+
+const canComponentBeDisplayed = (componentId: number, pageData: PageData, variables: Dictionary): boolean => {
+    const listContainingComponentId = pageData.lists.find((list) => list.components.includes(componentId));
+
+    if (listContainingComponentId!.id !== 0) {
+        const componentControllingList = pageData.components.find((component) => component.children === listContainingComponentId!.id);
+        const options = componentControllingList.options as ConditionOptions;
+        if (options.value === variables[options.variable]) {
+            return canComponentBeDisplayed(componentControllingList.id, pageData, variables);
+        }
+        return false;
+    }
+
+    return true;
+}
 
 export const usePageStore = create<PageState>((set, get) => ({
     displayedComponentIds: [],
@@ -19,10 +37,10 @@ export const usePageStore = create<PageState>((set, get) => ({
     getPageData: async (id) => {
         const pageData = await getPageData(id);
         const variables = pageData.variables ? pageData.variables.reduce(convertVariablesToDictionary, {}) : {};
-        const initialComponents = pageData.lists[0].components;
+        const displayedComponentIds = calculateDisplayedComponentIds(pageData, variables);
 
         set({
-            displayedComponentIds: initialComponents,
+            displayedComponentIds,
             pageData,
             variables
         });
@@ -38,20 +56,7 @@ export const usePageStore = create<PageState>((set, get) => ({
             [key]: value
         };
 
-        const displayedComponentIds = get().pageData!.components
-            .filter((component) => {
-                let canBeDisplayed = true;
-                const listContainingComponentId = get().pageData!.lists.find((list) => list.components.includes(component.id));
-
-                if (listContainingComponentId!.id !== 0) {
-                    const componentControllingList = get().pageData!.components.find((component) => component.children === listContainingComponentId!.id);
-                    const options = componentControllingList.options as ConditionOptions;
-                    canBeDisplayed = options.value === variables[options.variable];
-                }
-
-                return canBeDisplayed;
-            })
-            .map((component) => component.id);
+        const displayedComponentIds = calculateDisplayedComponentIds(get().pageData!, variables);
 
         set({
             variables,
