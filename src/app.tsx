@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router';
 import { usePageStore } from './state/PageStore';
-import PageComponent from './components/PageComponent';
+import { generateComponent } from './components/ComponentFactory';
 
 const App = () => {
     const { pageData, getPageData } = usePageStore();
@@ -24,7 +24,7 @@ const App = () => {
 
     return (
         <>
-            {components.map((component, i) => <PageComponent key={i} type={component.type} options={component.options} />)}
+            {components.map(generateComponent)}
         </>
     );
 };
