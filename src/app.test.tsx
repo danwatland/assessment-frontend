@@ -1,21 +1,21 @@
 import '@testing-library/jest-dom';
 import * as React from 'react';
-import axios from 'axios';
+import * as PageService from './services/PageService';
 import * as ReactRouter from 'react-router';
-import { fireEvent, render, waitForElementToBeRemoved } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import App from './app';
 
 jest.mock('react-router');
-jest.mock('axios');
+jest.mock('./services/PageService');
 
 describe('app', () => {
     const mockRouter = ReactRouter as jest.Mocked<typeof ReactRouter>;
-    const mockAxios = axios as jest.Mocked<typeof axios>;
+    const mockPageService = PageService as jest.Mocked<typeof PageService>;
 
     describe('page one', () => {
         beforeEach(() => {
             mockRouter.useParams.mockReturnValue({ id: 'page-one' });
-            mockAxios.get.mockResolvedValueOnce({ data: { data: {
+            mockPageService.getPageData.mockResolvedValue({
                 lists: [{ id: 0, components: [1, 2]}],
                 components: [{
                     "id": 1,
@@ -32,9 +32,8 @@ describe('app', () => {
                         "lat": "-73.98563758004718"
                     }
                 }]
-            }}});
-            mockAxios.get.mockResolvedValueOnce({ data: { data:
-                {
+            });
+            mockPageService.getWeatherForecast.mockResolvedValue({
                     lon: '40.748607102729295',
                     lat: '-73.98563758004718',
                     condition: 'cloudy',
@@ -60,7 +59,7 @@ describe('app', () => {
                         },
                     ],
                 }
-            }});
+            );
         });
 
         it('should show an image of the New York skyline and a weather report', async () => {
@@ -75,7 +74,7 @@ describe('app', () => {
     describe('page two', () => {
         beforeEach(() => {
             mockRouter.useParams.mockReturnValue({ id: 'page-two' });
-            mockAxios.get.mockResolvedValueOnce({ data: { data: {
+            mockPageService.getPageData.mockResolvedValue({
                 variables: [
                     {
                         name: 'show_weather',
@@ -130,8 +129,8 @@ describe('app', () => {
                         }
                     },
                 ],
-            }}});
-            mockAxios.get.mockResolvedValueOnce({ data: { data: {
+            });
+            mockPageService.getWeatherForecast.mockResolvedValue({
                     lon: '37.82012350797623',
                     lat: '-122.47822291578807',
                     condition: 'clear-day',
@@ -157,7 +156,7 @@ describe('app', () => {
                         },
                     ],
                 }
-            }});
+            );
         });
 
         it('should display a show button, a hide button and a weather forecast', async () => {
@@ -165,29 +164,28 @@ describe('app', () => {
 
             expect(await rendered.findByText('Show')).toBeInTheDocument();
             expect(await rendered.findByText('Hide')).toBeInTheDocument();
+        });
+
+        it('should show the forecast when the show button is pressed', async () => {
+            const rendered = render(<App />);
+
+            await rendered.findByText('Show')
+            fireEvent.click(rendered.getByText('Show'));
+
             expect(await rendered.findByText('San Francisco, CA')).toBeInTheDocument();
         });
 
-        it('should hide the forecast when the hide button is pressed', async () => {
+        it('should hide the forecast when the forecast is shown and the hide button is pressed', async () => {
             const rendered = render(<App />);
 
+            await rendered.findByText('Show')
+            fireEvent.click(rendered.getByText('Show'));
+
             await rendered.findByText('San Francisco, CA');
-            fireEvent.click(rendered.getByText('Hide'));
+
+            fireEvent.click(rendered.getByText('Hide'))
 
             expect(rendered.queryByText('San Francisco, CA')).not.toBeInTheDocument();
-        });
-
-        it('should show the forecast when the forecast is hidden and the show button is pressed', async () => {
-            const rendered = render(<App />);
-
-            await rendered.findByText('San Francisco, CA');
-            fireEvent.click(rendered.getByText('Hide'));
-
-            await waitForElementToBeRemoved(rendered.queryByText('San Francisco, CA'));
-
-            fireEvent.click(rendered.getByText('Show'))
-
-            expect(rendered.queryByText('San Francisco, CA')).toBeInTheDocument();
         });
     });
 });

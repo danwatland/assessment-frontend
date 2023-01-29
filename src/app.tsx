@@ -1,10 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router';
 import { usePageStore } from './state/PageStore';
-import { generateComponent } from './components/ComponentFactory';
+import { ComponentContainer } from './components/ComponentContainer';
 
 const App = () => {
-    const { pageData, getPageData } = usePageStore();
+    const pageData = usePageStore((state) => state.pageData);
+    const getPageData = usePageStore((state) => state.getPageData);
     const [components, setComponents] = React.useState<Component<any>[]>([]);
     const { id } = useParams<{ id: string }>();
 
@@ -14,17 +15,13 @@ const App = () => {
 
     React.useEffect(() => {
         if (pageData) {
-            const initialState = pageData.lists[0];
-            const initialComponents = initialState.components
-                .map<Component<any>>((componentId) => pageData.components.find((component) => component.id === componentId));
-
-            setComponents(initialComponents);
+            setComponents(pageData.components);
         }
     }, [pageData]);
 
     return (
         <>
-            {components.map(generateComponent)}
+            {components.map((component, i) => <ComponentContainer component={component} key={i} />)}
         </>
     );
 };
