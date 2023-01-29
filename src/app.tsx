@@ -6,7 +6,7 @@ import { ComponentContainer } from './components/ComponentContainer';
 const App = () => {
     const pageData = usePageStore((state) => state.pageData);
     const getPageData = usePageStore((state) => state.getPageData);
-    const [components, setComponents] = React.useState<Component<any>[]>([]);
+    const [components, setComponents] = React.useState<PageComponent<any>[]>([]);
     const { id } = useParams<{ id: string }>();
 
     React.useEffect(() => {

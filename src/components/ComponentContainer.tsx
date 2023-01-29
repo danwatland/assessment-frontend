@@ -4,7 +4,7 @@ import { usePageStore } from '../state/PageStore';
 import ButtonComponent from './ButtonComponent';
 
 interface ComponentContainerProps {
-    component: Component<any>
+    component: PageComponent<any>
 }
 
 export const ComponentContainer = ({ component }: ComponentContainerProps): React.ReactElement | null => {
