@@ -18,7 +18,7 @@ const WeatherComponent = (props: WeatherOptions): React.ReactElement => {
     }, [getWeatherForecast, props.lat, props.lon]);
 
     return (
-        <div className='weather-forecast'>
+        <div className='weather-forecast component-container'>
             { forecast && (
                 <>
                     <div className='weather-forecast-current-conditions'>

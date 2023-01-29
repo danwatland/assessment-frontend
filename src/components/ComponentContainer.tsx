@@ -11,18 +11,6 @@ export const ComponentContainer = ({ component }: ComponentContainerProps): Reac
     const displayedComponentIds = usePageStore((state) => state.displayedComponentIds);
     let content: React.ReactElement | null = null;
 
-    const container = (content: React.ReactElement | null): React.ReactElement | null => {
-        if (!content) {
-            return null;
-        }
-
-        return (
-            <div className='component-container'>
-                {content}
-            </div>
-        )
-    };
-
     if (displayedComponentIds.includes(component.id)) {
         switch (component.type) {
             case 'button':
@@ -34,7 +22,9 @@ export const ComponentContainer = ({ component }: ComponentContainerProps): Reac
             case 'image':
                 const options = component.options as ImageOptions;
                 content = (
-                    <img src={options.src} alt={options.alt} height={130} width={320}/>
+                    <div className='component-container'>
+                        <img src={options.src} alt={options.alt} height={130} width={320}/>
+                    </div>
                 );
                 break;
             case 'weather':
@@ -45,5 +35,5 @@ export const ComponentContainer = ({ component }: ComponentContainerProps): Reac
         }
     }
 
-    return container(content);
+    return content;
 };
