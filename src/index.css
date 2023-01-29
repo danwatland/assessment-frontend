@@ -4,3 +4,57 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+.component-container {
+    border: 1px solid #bbb;
+    border-radius: 12px;
+    width: 320px;
+    height: 130px;
+    margin: 16px;
+}
+
+.weather-forecast {
+    display: flex;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.weather-forecast h1 {
+    font-size: 1.75rem;
+    font-weight: lighter;
+    margin: 6px 0 0;
+}
+
+.weather-forecast h4 {
+    font-size: 0.75rem;
+    font-weight: lighter;
+    margin: 0;
+}
+
+.weather-forecast-current-conditions {
+    display: flex;
+    flex-direction: row;
+    margin: 8px;
+}
+
+.weather-forecast-current-temperature {
+    display: flex;
+    flex-direction: column;
+}
+
+.weather-forecast-future-conditions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px;
+}
+
+.weather-forecast-future-conditions > h4 {
+    text-align: right;
+}
+
+.weather-forecast-daily-temperature {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+}
