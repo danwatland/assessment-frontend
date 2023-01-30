@@ -7,9 +7,9 @@ In this assessment you will create a front end web application that fetches Page
 To get started a react project is included. TypeScript is strongly recommended for this exercise. CSS modules are supported using the `.module.css` extension alternatively you can use any styling tooling/library you choose. Feel free to add other dependencies as
 necessary.
 
-Some items have been over simplifed for the sake of the assignment. We are looking for general adherence to the mockups, but we understand that based on the information given you might need to make some best guesses (font, pixel size, etc). Internally we use Zeplin to communicate requirements to engineers. 
+Some items have been over simplifed for the sake of the assignment. We are looking for general adherence to the mockups, but we understand that based on the information given you might need to make some best guesses (font, pixel size, etc). Internally we use Zeplin to communicate requirements to engineers.
 
-You reach out with any questions. Any assumptions you make should be documented in the readme under *Developer Notes*. Assume that the person who reviews the exersize is not going to be the same person you interviewed with/asked questions to. 
+You reach out with any questions. Any assumptions you make should be documented in the readme under *Developer Notes*. Assume that the person who reviews the exersize is not going to be the same person you interviewed with/asked questions to.
 
 ### API
 
@@ -132,5 +132,6 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### Developer Notes
 
-* Node version 14.17 is listed in `.nvmrc` but there aren't binaries for Node < v15 available for Apple M1 chips. Read more about this here: [https://github.com/nvm-sh/nvm/issues/2350](https://github.com/nvm-sh/nvm/issues/2350). It is possible to get around this by opening a new shell via `arch -x86_64 SHELL_NAME` (replace SHELL_NAME with your preferred shell, i.e. zsh/bash) 
+* Node version 14.17 is listed in `.nvmrc` but there aren't binaries for Node < v15 available for Apple M1 chips. Read more about this here: [https://github.com/nvm-sh/nvm/issues/2350](https://github.com/nvm-sh/nvm/issues/2350). It is possible to get around this by opening a new shell via `arch -x86_64 SHELL_NAME` (replace SHELL_NAME with your preferred shell, i.e. zsh/bash)
 * I'm assuming I'm supposed to leave the server alone. There are a couple of things I'd tweak on the server if this isn't the case.
+* I'm also assuming I'm only styling for mobile devices as per the Figma mockups.
