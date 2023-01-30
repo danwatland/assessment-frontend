@@ -4,8 +4,9 @@ import { usePageStore } from './state/PageStore';
 import { ComponentContainer } from './components/ComponentContainer';
 
 const App = () => {
-    const pageData = usePageStore((state) => state.pageData);
+    const initialComponents = usePageStore((state) => state.initialComponents);
     const getPageData = usePageStore((state) => state.getPageData);
+
     const [components, setComponents] = React.useState<PageComponent<any>[]>([]);
     const { id } = useParams<{ id: string }>();
 
@@ -14,10 +15,10 @@ const App = () => {
     }, [id, getPageData]);
 
     React.useEffect(() => {
-        if (pageData) {
-            setComponents(pageData.components);
+        if (initialComponents) {
+            setComponents(initialComponents);
         }
-    }, [pageData]);
+    }, [initialComponents]);
 
     return (
         <>

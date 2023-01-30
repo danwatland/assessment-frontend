@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 import { getPageData, getWeatherForecast } from '../services/PageService';
-import { calculateDisplayedComponentIds } from '../helpers/ComponentDisplayHelpers';
 
 type PageState = {
     displayedComponentIds: number[],
     forecast?: WeatherForecast,
+    initialComponents: PageComponent<any>[],
     pageData?: PageData,
     variables: Dictionary,
     getPageData: (id: string) => void,
@@ -16,14 +16,15 @@ const convertVariablesToDictionary = (dictionary: Dictionary, variable: PageVari
 
 export const usePageStore = create<PageState>((set, get) => ({
     displayedComponentIds: [],
+    initialComponents: [],
     variables: {},
     getPageData: async (id) => {
         const pageData = await getPageData(id);
         const variables = pageData.variables ? pageData.variables.reduce(convertVariablesToDictionary, {}) : {};
-        const displayedComponentIds = calculateDisplayedComponentIds(pageData, variables);
+        const initialComponents = pageData.lists[0].components.map((id) => pageData.components.find((component) => component.id === id));
 
         set({
-            displayedComponentIds,
+            initialComponents,
             pageData,
             variables
         });
@@ -39,11 +40,6 @@ export const usePageStore = create<PageState>((set, get) => ({
             [key]: value
         };
 
-        const displayedComponentIds = calculateDisplayedComponentIds(get().pageData!, variables);
-
-        set({
-            variables,
-            displayedComponentIds
-        });
+        set({ variables });
     }
 }));

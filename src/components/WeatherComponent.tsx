@@ -14,8 +14,10 @@ const WeatherComponent = (props: WeatherOptions): React.ReactElement => {
     const { forecast, getWeatherForecast } = usePageStore((store) => ({ getWeatherForecast: store.getWeatherForecast, forecast: store.forecast }));
 
     React.useEffect(() => {
-        getWeatherForecast(props.lat, props.lon);
-    }, [getWeatherForecast, props.lat, props.lon]);
+        if (!forecast || forecast.lat !== props.lat || forecast.lon !== props.lon) {
+            getWeatherForecast(props.lat, props.lon);
+        }
+    }, [forecast, getWeatherForecast, props.lat, props.lon]);
 
     return (
         <div className='weather-forecast component-container'>

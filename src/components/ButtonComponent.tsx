@@ -17,7 +17,9 @@ const ButtonComponent = (props: ButtonOptions): React.ReactElement => {
     }
 
     return (
-        <div className='button-with-icon component-container' onClick={() => setPageVariable(props.variable, props.value)}>
+        <div className='button-with-icon component-container' onClick={() => {
+            setPageVariable(props.variable, props.value)
+        }}>
             <h3>{props.text}</h3>
             <img src={icon} alt={props.value} width={48} height={48} />
         </div>

@@ -6,6 +6,7 @@ import { fireEvent, render, waitForElementToBeRemoved } from '@testing-library/r
 import VALUES from '../server/values';
 import PAGES from '../server/pages';
 import App from './app';
+import { usePageStore } from './state/PageStore';
 
 jest.mock('react-router');
 jest.mock('./services/PageService');
@@ -13,6 +14,10 @@ jest.mock('./services/PageService');
 describe('app', () => {
     const mockRouter = ReactRouter as jest.Mocked<typeof ReactRouter>;
     const mockPageService = PageService as jest.Mocked<typeof PageService>;
+
+    beforeEach(() => {
+        usePageStore.setState({ forecast: undefined });
+    });
 
     describe('page one', () => {
         beforeEach(() => {
@@ -77,11 +82,12 @@ describe('app', () => {
         it('should display buttons and the forecast for New York', async () => {
             const rendered = render(<App />);
 
-            expect(await rendered.findByText('Show')).toBeInTheDocument();
-            expect(await rendered.findByText('San Francisco')).toBeInTheDocument();
-            expect(await rendered.findByText('Chicago')).toBeInTheDocument();
-            expect(await rendered.findByText('New York, NY')).toBeInTheDocument();
-            expect(await rendered.findByText(/78/)).toBeInTheDocument();
+            await rendered.findByText('New York, NY');
+            expect(rendered.getByText('Show')).toBeInTheDocument();
+            expect(rendered.getByText('San Francisco')).toBeInTheDocument();
+            expect(rendered.getByText('Chicago')).toBeInTheDocument();
+            expect(rendered.getByText('New York, NY')).toBeInTheDocument();
+            expect(rendered.getByText(/78/)).toBeInTheDocument();
         });
 
         it('should show a picture of the New York skyline when the show button is pressed', async () => {
@@ -113,7 +119,7 @@ describe('app', () => {
                 const rendered = render(<App />);
 
                 await rendered.findByText('San Francisco');
-                mockPageService.getWeatherForecast.mockResolvedValueOnce(VALUES.WEATHER_LOCATIONS[1]);
+                mockPageService.getWeatherForecast.mockResolvedValue(VALUES.WEATHER_LOCATIONS[1]);
                 fireEvent.click(rendered.getByText('San Francisco'));
 
                 expect(await rendered.findByText('San Francisco, CA')).toBeInTheDocument();
